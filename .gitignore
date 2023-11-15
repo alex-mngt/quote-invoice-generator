@@ -48,5 +48,6 @@ next-env.d.ts
 # webstorm
 .idea
 
-# puppeteer cache
+# puppeteer 
 /.cache/
+puppeteer.config.cjs
