@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# WeAreStudio99 - Quote & invoice generator
+
+This README outlines the necessary steps to get the **quote-invoice-generator** development environment up and running. Please follow the instructions carefully to ensure compatibility across different work environments.
+
+## Disclaimer
+
+This project leverages NextJS's new server actions feature in conjunction with Puppeteer. Current deployment on Vercel involves a serverless environment which poses compatibility issues with Puppeteer, preventing it from functioning correctly when deployed. As such, please be aware that the current intended use-case for this program is strictly for local development and execution. Future updates may address this deployment limitation, but for now, ensure to run and test the application locally.
+
+## Node.js
+
+To synchronize Node.js versions across different environments, we recommend using [NVM (Node Version Manager)](https://github.com/nvm-sh/nvm). Once installed, you can set the project's Node.js version with the following command:
+
+```bash
+nvm install
+```
+
+## Yarn
+
+Yarn is the package manager of choice for this project. After ensuring you are using Node.js 20 _(lts/iron)_, activate `corepack` to use Yarn by running:
+
+```bash
+corepack enable
+```
+
+## Visual Studio Code
+
+Uniformity in the TypeScript version used across different development setups is crucial. For VSCode users, ensure that you [use the workspace version of TypeScript](https://code.visualstudio.com/docs/typescript/typescript-compiling#_using-the-workspace-version-of-typescript) rather than the built-in version provided by VSCode.
+
+### Optional: Optimized Editor Configuration
+
+For an enhanced development experience with project-specific editor settings, copy the `.vscode.sample` folder to your workspace configuration folder `.vscode`:
+
+```bash
+cp -R .vscode.sample .vscode
+```
 
 ## Getting Started
 
-First, run the development server:
+Ensure that you follow the sections below in sequence to set up your development environment without issues. Documentation is provided to guide you through the major setup steps.
+
+### Setup Environment Variables
+
+Begin by creating a `.env.local` file for your environment variables. Use the `.env.local.sample` as a template:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.local.sample .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Replace the placeholders in the newly created file with your actual values.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Install Dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To install the project dependencies, run:
 
-## Learn More
+```bash
+yarn install
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Running the App
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To start the application in watch mode during development:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+yarn run dev
+```
 
-## Deploy on Vercel
+For running the application in production mode:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+yarn run start
+```

@@ -50,4 +50,3 @@ next-env.d.ts
 
 # puppeteer 
 /.cache/
-puppeteer.config.cjs
