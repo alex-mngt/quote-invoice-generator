@@ -15,18 +15,18 @@ import { updateTextInputNameSearchParams } from "../_internal/Configurator.utils
 type Props = {
   invoiceNumber: string | undefined;
   invoiceObject: string | undefined;
+  template: string | undefined;
 };
 
 export const BaseConfigurator: FC<Props> = (props) => {
-  const { invoiceNumber, invoiceObject } = props;
+  const { invoiceNumber, invoiceObject, template } = props;
   const router = useRouter();
 
-  const url = new URL(window.location.href);
-  const searchParams = url.searchParams;
-  const selectedTemplate = searchParams.get("template");
-  const selectedTemplateIndex = getSelectedTemplateIndex(selectedTemplate);
+  const selectedTemplateIndex = getSelectedTemplateIndex(template);
 
   useEffect(() => {
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams;
     searchParams.set("template", TEMPLATE_OPTIONS[selectedTemplateIndex].value);
 
     router.replace(url.href);
@@ -34,6 +34,13 @@ export const BaseConfigurator: FC<Props> = (props) => {
   }, []);
 
   const updateTemplateSearchParams = (newSelectedIdx: number) => {
+    if (window === undefined) {
+      return;
+    }
+
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams;
+
     searchParams.set("template", TEMPLATE_OPTIONS[newSelectedIdx].value);
 
     router.replace(url.href);

@@ -16,6 +16,7 @@ import { ClientConfigurator } from "./ClientConfigurator";
 import { TasksConfigurator } from "./TasksConfigurator";
 
 type Props = {
+  template: string | undefined;
   invoiceNumber: string | undefined;
   invoiceObject: string | undefined;
   clientName: string | undefined;
@@ -29,6 +30,7 @@ type Props = {
 
 export const Configurator: FC<Props> = (props) => {
   const {
+    template,
     className,
     invoiceNumber,
     invoiceObject,
@@ -73,6 +75,7 @@ export const Configurator: FC<Props> = (props) => {
       <BaseConfigurator
         invoiceNumber={invoiceNumber}
         invoiceObject={invoiceObject}
+        template={template}
       />
       <ClientConfigurator
         clientAddress={clientAddress}

@@ -94,6 +94,7 @@ const Home: FC<Props> = (props) => {
           invoiceNumber={invoiceNumber}
           invoiceObject={invoiceObject}
           tasks={tasks}
+          template={template}
         />
       </div>
     )

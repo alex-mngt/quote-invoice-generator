@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { CommonProps } from "@/lib/types";
 
 import { SelectOption } from "./_internal/SelectInput.types";
+import { getCurrentValue } from "./_internal/SelectInput.utils";
 import { INPUT_STYLING_CLASSNAME } from "../_internal/Inputs.constants";
 
 type Props = {
@@ -17,7 +18,15 @@ type Props = {
 } & CommonProps;
 
 export const SelectInput: FC<Props> = (props) => {
-  const { className, label, name, placeholder, onChange, options } = props;
+  const {
+    className,
+    label,
+    name,
+    placeholder,
+    onChange,
+    options,
+    selectedIndex,
+  } = props;
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
     onChange(Number(e.target.value));
@@ -33,6 +42,7 @@ export const SelectInput: FC<Props> = (props) => {
         id={name}
         name={name}
         onChange={handleChange}
+        value={getCurrentValue(selectedIndex, placeholder)}
       >
         {placeholder !== undefined ? (
           <option disabled value=''>
