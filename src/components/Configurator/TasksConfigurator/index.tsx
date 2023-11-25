@@ -1,6 +1,6 @@
 import { ChangeEventHandler, FC, MouseEventHandler } from "react";
 
-import { TrashIcon } from "@heroicons/react/20/solid";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { clsx } from "clsx";
 import { useRouter } from "next/navigation";
 
@@ -100,7 +100,7 @@ export const TasksConfigurator: FC<Props> = (props) => {
               <div className={clsx("flex grow gap-4")}>
                 <TextInput
                   className={clsx("basis-2/3")}
-                  label='Titre'
+                  label='Nom'
                   name={`${idx}-name`}
                   onChange={updateTaskFromTasksURLEncodedSearchParam}
                   type='text'
@@ -108,7 +108,7 @@ export const TasksConfigurator: FC<Props> = (props) => {
                 />
                 <TextInput
                   className={clsx("basis-1/3")}
-                  label='Quantité'
+                  label='Jour(s)'
                   name={`${idx}-quantity`}
                   onChange={updateTaskFromTasksURLEncodedSearchParam}
                   type='number'
@@ -116,17 +116,17 @@ export const TasksConfigurator: FC<Props> = (props) => {
                 />
               </div>
               <TextAreaInput
-                label='Detail'
+                label='Description'
                 name={`${idx}-description`}
                 onChange={updateTaskFromTasksURLEncodedSearchParam}
                 value={task.description === null ? undefined : task.description}
               />
             </div>
             <Button
-              className={clsx("mt-[72px]", " text-white")}
+              className={clsx("mt-[72px]", "h-[34px]", " text-white")}
               onClick={removeTaskFromTasksURLEncodedParam(idx)}
             >
-              <TrashIcon className={clsx("h-5 w-5")} />
+              <TrashIcon className={clsx("h-4 w-4")} />
             </Button>
           </div>
         ))}
