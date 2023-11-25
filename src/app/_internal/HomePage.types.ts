@@ -9,4 +9,5 @@ export type HomePageSearchParams = {
   clientCountry?: string;
   clientEmail?: string;
   tasksURLEncoded?: string;
+  template?: string;
 };

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { TextInput } from "@/components/Inputs/TextInput";
 
-import { updateInputNameSearchParams } from "../_internal/Configurator.utils";
+import { updateTextInputNameSearchParams } from "../_internal/Configurator.utils";
 
 type Props = {
   clientName: string | undefined;
@@ -36,7 +36,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-1/2")}
             label='Nom'
             name='clientName'
-            onChange={updateInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams(router)}
             type='text'
             value={clientName}
           />
@@ -44,7 +44,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-1/2")}
             label='Email'
             name='clientEmail'
-            onChange={updateInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams(router)}
             type='text'
             value={clientEmail}
           />
@@ -54,7 +54,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-full")}
             label='Adresse'
             name='clientAddress'
-            onChange={updateInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams(router)}
             type='text'
             value={clientAddress}
           />
@@ -64,7 +64,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-2/12")}
             label='Code postal'
             name='clientZipCodeString'
-            onChange={updateInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams(router)}
             type='number'
             value={clientZipCode}
           />
@@ -72,7 +72,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-5/12")}
             label='Ville'
             name='clientCity'
-            onChange={updateInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams(router)}
             type='text'
             value={clientCity}
           />
@@ -80,7 +80,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-5/12")}
             label='Pays'
             name='clientCountry'
-            onChange={updateInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams(router)}
             type='text'
             value={clientCountry}
           />
