@@ -6,8 +6,7 @@ import { FC } from "react";
 import { clsx } from "clsx";
 
 import { Configurator } from "@/components/Configurator";
-import { Invoice } from "@/components/Invoice";
-import { Quote } from "@/components/Quote";
+import { Render } from "@/components/Render";
 import { getTasksFromTasksURLEncoded } from "@/lib/utils";
 
 import { HomePageSearchParams } from "./_internal/HomePage.types";
@@ -47,10 +46,23 @@ const Home: FC<Props> = (props) => {
 
   return areSearchParamsValid ? (
     render === "true" ? (
-      template === "quote" ? (
-        <Quote />
-      ) : (
-        <Invoice
+      <Render
+        clientAddress={clientAddress}
+        clientCity={clientCity}
+        clientCountry={clientCountry}
+        clientEmail={clientEmail}
+        clientName={clientName}
+        clientZipCode={clientZipCode}
+        invoiceNumber={invoiceNumber}
+        invoiceObject={invoiceObject}
+        render={render === "true"}
+        tasks={tasks}
+        template={template}
+      />
+    ) : (
+      <div className={clsx("h-screen overflow-hidden", "flex")}>
+        <Render
+          className={clsx("overflow-y-scroll")}
           clientAddress={clientAddress}
           clientCity={clientCity}
           clientCountry={clientCountry}
@@ -61,28 +73,8 @@ const Home: FC<Props> = (props) => {
           invoiceObject={invoiceObject}
           render={render === "true"}
           tasks={tasks}
+          template={template}
         />
-      )
-    ) : (
-      <div className={clsx("h-screen overflow-hidden", "flex")}>
-        {template === "quote" ? (
-          <Quote />
-        ) : (
-          <Invoice
-            className={clsx("overflow-y-scroll")}
-            clientAddress={clientAddress}
-            clientCity={clientCity}
-            clientCountry={clientCountry}
-            clientEmail={clientEmail}
-            clientName={clientName}
-            clientZipCode={clientZipCode}
-            invoiceNumber={invoiceNumber}
-            invoiceObject={invoiceObject}
-            render={render === "true"}
-            tasks={tasks}
-          />
-        )}
-
         <Configurator
           className={clsx("flex-1", "overflow-y-scroll")}
           clientAddress={clientAddress}
