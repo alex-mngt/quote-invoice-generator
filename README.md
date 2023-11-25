@@ -2,6 +2,11 @@
 
 This README outlines the necessary steps to get the **quote-invoice-generator** development environment up and running. Please follow the instructions carefully to ensure compatibility across different work environments.
 
+## Manifesto
+
+This project starts as a POC for running Puppeteer in NextJS Server Actions (for PDF generation) and a first attempt at storing all state in the URL. It's also used as a sandbox to research the best way to configure and structure a NextJS App for a fluid development and a robust software. Finally, it tries to be a showcase for the state of MY art with these technologies.
+PS : I may really need to generate invoices & quotes but I prefer to spend my time coding this rather than opening Acrobat like any sane person.
+
 ## Disclaimer
 
 This project leverages NextJS's new server actions feature in conjunction with Puppeteer. Current deployment on Vercel involves a serverless environment which poses compatibility issues with Puppeteer, preventing it from functioning correctly when deployed. As such, please be aware that the current intended use-case for this program is strictly for local development and execution. Future updates may address this deployment limitation, but for now, ensure to run and test the application locally.
@@ -68,4 +73,10 @@ For running the application in production mode:
 
 ```bash
 yarn run start
+```
+
+To remove `node_modules`, `.yarn.lock`, the puppeteer cache and the NextJS build output & re-install all dependencies
+
+```bash
+yarn run reset
 ```
