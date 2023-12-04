@@ -2,6 +2,8 @@
 
 import { PuppeteerNode } from "puppeteer";
 
+import { PDF_MARGINS } from "@/lib/constants";
+
 const puppeteer: PuppeteerNode = require("puppeteer");
 
 export const createPDFBufferJSON = async (
@@ -24,7 +26,7 @@ export const createPDFBufferJSON = async (
 
   const pdfBuffer = await page.pdf({
     format: "A4",
-    margin: { top: "2cm", right: "2cm", bottom: "2cm", left: "2cm" },
+    margin: PDF_MARGINS,
   });
 
   await new Promise<void>((r) =>
