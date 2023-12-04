@@ -3,14 +3,16 @@ import { FC } from "react";
 import { clsx } from "clsx";
 import { DateTime } from "luxon";
 
+import { PDF_MARGINS } from "@/lib/constants";
 import { CommonProps, Task } from "@/lib/types";
 
-import { RenderBaseLayout } from "./RenderBaseLayout";
+import { getRenderTitle } from "./_internal/Render.utils";
 import { RenderDetails } from "./RenderDetails";
 import { RenderLegal } from "./RenderLegal";
 import { RenderParties } from "./RenderParties";
 import { RenderPayment } from "./RenderPayment";
 import { RenderTasks } from "./RenderTasks";
+import { WeAreStudio99 } from "../icons/WeAreStudio99";
 
 type Props = {
   render: boolean;
@@ -49,7 +51,18 @@ export const Render: FC<Props> = (props) => {
   const isADRNumber = !isNaN(ADR);
 
   return isADRNumber ? (
-    <RenderBaseLayout className={className} render={render} template={template}>
+    <main
+      className={clsx(className, !render && `w-[21cm]`, "no-scrollbar")}
+      style={{
+        padding: `${PDF_MARGINS.top} ${PDF_MARGINS.right} ${PDF_MARGINS.bottom} ${PDF_MARGINS.left}`,
+      }}
+    >
+      <div className={clsx("flex justify-between", "mb-8")}>
+        <h1 className={clsx("text-3xl font-semibold")}>
+          {getRenderTitle(template)}
+        </h1>
+        <WeAreStudio99 className='w-12' />
+      </div>
       <RenderDetails
         className='mb-8'
         invoiceNumber={invoiceNumber}
@@ -77,7 +90,7 @@ export const Render: FC<Props> = (props) => {
         today={today}
       />
       <RenderLegal />
-    </RenderBaseLayout>
+    </main>
   ) : (
     <p>invalid ADR</p>
   );
