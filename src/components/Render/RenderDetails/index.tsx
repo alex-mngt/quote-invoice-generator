@@ -5,6 +5,8 @@ import { DateTime } from "luxon";
 
 import { CommonProps } from "@/lib/types";
 
+import { getDetailsNumberName } from "./_internal/RenderDetails.utils";
+
 type Props = {
   invoiceNumber: string | undefined;
   today: DateTime;
@@ -12,14 +14,15 @@ type Props = {
 } & CommonProps;
 
 export const RenderDetails: FC<Props> = (props) => {
-  const { className, invoiceNumber, today, template } = props;
+  let { className, invoiceNumber, today, template } = props;
 
   return (
     <div className={clsx(className)}>
       <p>
         <span className={clsx("font-semibold")}>
-          Numero de {template === "quote" ? "devis" : "facture"} :{" "}
+          {getDetailsNumberName(template)} :
         </span>
+        &nbsp;
         {invoiceNumber}
       </p>
       <p>
@@ -28,8 +31,9 @@ export const RenderDetails: FC<Props> = (props) => {
       </p>
       <p>
         <span className={clsx("font-semibold")}>
-          Date d&apos;{template === "quote" ? "expiration" : "échéance"} :{" "}
+          Date d&apos;{template === "quote" ? "expiration" : "échéance"} :
         </span>
+        &nbsp;
         {today.setLocale("fr").plus({ day: 30 }).toLocaleString()}
       </p>
     </div>

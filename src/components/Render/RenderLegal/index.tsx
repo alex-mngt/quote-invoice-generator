@@ -14,9 +14,9 @@ export const RenderLegal: FC<Props> = () => {
         répertoire des métiers
       </p>
       <p>
-        Siège social : {process.env.NEXT_PUBLIC_COMPANY_ADDRESS},{" "}
-        {process.env.NEXT_PUBLIC_COMPANY_ZIP_CODE},{" "}
-        {process.env.NEXT_PUBLIC_COMPANY_CITY},{" "}
+        Siège social : {process.env.NEXT_PUBLIC_COMPANY_ADDRESS},&nbsp;
+        {process.env.NEXT_PUBLIC_COMPANY_ZIP_CODE},&nbsp;
+        {process.env.NEXT_PUBLIC_COMPANY_CITY},&nbsp;
         {process.env.NEXT_PUBLIC_COMPANY_COUNTRY}
       </p>
       <div className={clsx("flex items-center gap-1")}>

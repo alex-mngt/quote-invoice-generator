@@ -10,7 +10,7 @@ import { TextInput } from "@/components/Inputs/TextInput";
 
 import { TEMPLATE_OPTIONS } from "./_internal/BaseConfigurator.constants";
 import { getSelectedTemplateIndex } from "./_internal/BaseConfigurator.utils";
-import { updateTextInputNameSearchParams } from "../_internal/Configurator.utils";
+import { getTextInputNameSearchParamsUpdater } from "../_internal/Configurator.utils";
 
 type Props = {
   invoiceNumber: string | undefined;
@@ -23,15 +23,6 @@ export const BaseConfigurator: FC<Props> = (props) => {
   const router = useRouter();
 
   const selectedTemplateIndex = getSelectedTemplateIndex(template);
-
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const searchParams = url.searchParams;
-    searchParams.set("template", TEMPLATE_OPTIONS[selectedTemplateIndex].value);
-
-    router.replace(url.href);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const updateTemplateSearchParams = (newSelectedIdx: number) => {
     if (window === undefined) {
@@ -46,36 +37,47 @@ export const BaseConfigurator: FC<Props> = (props) => {
     router.replace(url.href);
   };
 
+  const updateTextInputNameSearchParams =
+    getTextInputNameSearchParamsUpdater(router);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams;
+    searchParams.set("template", TEMPLATE_OPTIONS[selectedTemplateIndex].value);
+
+    router.replace(url.href);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className={clsx("w-full", "flex flex-col gap-6")}>
       <p className={clsx("text-xl font-semibold")}>Base</p>
       <div className={clsx("flex flex-col gap-4")}>
-        <SelectInput
-          className={clsx("w-1/2")}
-          label='Template'
-          name='template'
-          onChange={updateTemplateSearchParams}
-          options={TEMPLATE_OPTIONS}
-          selectedIndex={selectedTemplateIndex}
-        />
-        <div className={clsx("flex justify-start gap-4", "w-full")}>
+        <div className={clsx("flex gap-4")}>
+          <SelectInput
+            className={clsx("basis-1/2")}
+            label='Template'
+            name='template'
+            onChange={updateTemplateSearchParams}
+            options={TEMPLATE_OPTIONS}
+            selectedIndex={selectedTemplateIndex}
+          />
           <TextInput
-            className='animation-fadeIn basis-1/2'
+            className={clsx("basis-1/2")}
             label='Numéro de facture'
             name='invoiceNumber'
-            onChange={updateTextInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams}
             type='text'
             value={invoiceNumber}
           />
-          <TextInput
-            className='animation-fadeIn basis-1/2'
-            label='Objet'
-            name='invoiceObject'
-            onChange={updateTextInputNameSearchParams(router)}
-            type='text'
-            value={invoiceObject}
-          />
         </div>
+        <TextInput
+          label='Objet'
+          name='invoiceObject'
+          onChange={updateTextInputNameSearchParams}
+          type='text'
+          value={invoiceObject}
+        />
       </div>
     </div>
   );

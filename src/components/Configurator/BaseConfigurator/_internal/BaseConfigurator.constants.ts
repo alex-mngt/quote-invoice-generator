@@ -3,4 +3,5 @@ import { SelectOption } from "@/components/Inputs/SelectInput/_internal/SelectIn
 export const TEMPLATE_OPTIONS: SelectOption[] = [
   { display: "Facture", value: "invoice" },
   { display: "Devis", value: "quote" },
+  { display: "Acompte", value: "deposit" },
 ];

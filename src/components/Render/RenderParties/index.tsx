@@ -7,6 +7,7 @@ import { displayArrayWithCommas } from "@/lib/utils";
 
 type Props = {
   clientName: string | undefined;
+  clientSIREN: string | undefined;
   clientAddress: string | undefined;
   clientZipCode: number | undefined;
   clientCity: string | undefined;
@@ -18,6 +19,7 @@ export const RenderParties: FC<Props> = (props) => {
   const {
     className,
     clientName,
+    clientSIREN,
     clientAddress,
     clientZipCode,
     clientCity,
@@ -32,8 +34,8 @@ export const RenderParties: FC<Props> = (props) => {
         </p>
         <p>{process.env.NEXT_PUBLIC_COMPANY_ADDRESS}</p>
         <p>
-          {process.env.NEXT_PUBLIC_COMPANY_ZIP_CODE},{" "}
-          {process.env.NEXT_PUBLIC_COMPANY_CITY},{" "}
+          {process.env.NEXT_PUBLIC_COMPANY_ZIP_CODE},&nbsp;
+          {process.env.NEXT_PUBLIC_COMPANY_CITY},&nbsp;
           {process.env.NEXT_PUBLIC_COMPANY_COUNTRY}
         </p>
         <a href={`mailto:${process.env.NEXT_PUBLIC_COMPANY_EMAIL}`}>
@@ -45,6 +47,10 @@ export const RenderParties: FC<Props> = (props) => {
       </div>
       <div className='flex flex-1 flex-col gap-1'>
         <p className={clsx("mb-2", "text-lg font-semibold")}>{clientName}</p>
+        <p>
+          <span className={clsx("font-medium")}>SIREN : </span>
+          {clientSIREN}
+        </p>
         <p>{clientAddress}</p>
         <p>
           {displayArrayWithCommas([clientZipCode, clientCity, clientCountry])}

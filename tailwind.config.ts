@@ -11,9 +11,6 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-neue-montreal)"],
       },
-      animation: {
-        fadeIn: "fadeIn 150ms cubic-bezier(0.4, 0, 0.2, 1)",
-      },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0" },

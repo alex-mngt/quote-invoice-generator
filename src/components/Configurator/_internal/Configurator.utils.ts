@@ -19,7 +19,7 @@ export const setTasksURLEncodedSearchParam = (url: URL, tasks: Task[]) => {
   );
 };
 
-export const updateTextInputNameSearchParams: (
+export const getTextInputNameSearchParamsUpdater: (
   router: AppRouterInstance,
 ) => ChangeEventHandler<HTMLInputElement> = (router) => (e) => {
   const url = new URL(window.location.href);
@@ -31,6 +31,16 @@ export const updateTextInputNameSearchParams: (
   }
 
   url.searchParams.set(e.target.name, e.target.value);
+
+  router.replace(url.href);
+};
+
+export const getSwitchInputNameSearchParamsUpdater: (
+  router: AppRouterInstance,
+) => ChangeEventHandler<HTMLInputElement> = (router) => (e) => {
+  const url = new URL(window.location.href);
+
+  url.searchParams.set(e.target.name, `${e.target.checked}`);
 
   router.replace(url.href);
 };

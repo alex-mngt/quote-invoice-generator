@@ -13,19 +13,23 @@ import { downloadFromUrl } from "@/lib/utils";
 
 import { BaseConfigurator } from "./BaseConfigurator";
 import { ClientConfigurator } from "./ClientConfigurator";
+import { OptionsConfigurator } from "./OptionsConfigurator";
 import { TasksConfigurator } from "./TasksConfigurator";
 
 type Props = {
   template: string | undefined;
   invoiceNumber: string | undefined;
   invoiceObject: string | undefined;
+  deposit: number | undefined;
   clientName: string | undefined;
+  clientSIREN: string | undefined;
   clientAddress: string | undefined;
   clientZipCode: number | undefined;
   clientCity: string | undefined;
   clientCountry: string | undefined;
   clientEmail: string | undefined;
   tasks: Task[] | undefined;
+  invoiceWithDeposit: boolean | undefined;
 } & CommonProps;
 
 export const Configurator: FC<Props> = (props) => {
@@ -34,13 +38,16 @@ export const Configurator: FC<Props> = (props) => {
     className,
     invoiceNumber,
     invoiceObject,
+    deposit,
     clientName,
+    clientSIREN,
     clientAddress,
     clientZipCode,
     clientCity,
     clientCountry,
     clientEmail,
     tasks,
+    invoiceWithDeposit,
   } = props;
 
   const [isPending, startTransition] = useTransition();
@@ -61,6 +68,9 @@ export const Configurator: FC<Props> = (props) => {
       downloadFromUrl(pdfBlobUrl, `${invoiceNumber}.pdf`);
     });
   };
+
+  const isDeposit = template === "deposit";
+  const isQuote = template === "quote";
 
   return (
     <form
@@ -83,9 +93,17 @@ export const Configurator: FC<Props> = (props) => {
         clientCountry={clientCountry}
         clientEmail={clientEmail}
         clientName={clientName}
+        clientSIREN={clientSIREN}
         clientZipCode={clientZipCode}
       />
-      <TasksConfigurator tasks={tasks} />
+      {!isQuote && (
+        <OptionsConfigurator
+          deposit={deposit}
+          invoiceWithDeposit={invoiceWithDeposit}
+          template={template}
+        />
+      )}
+      {!isDeposit && <TasksConfigurator tasks={tasks} />}
       <Button type='submit'>
         {isPending ? "Generating PDF invoice ..." : "Download PDF invoice"}
       </Button>

@@ -36,7 +36,7 @@ export const TextInput: FC<Props> = (props) => {
         {label}
       </label>
       <input
-        className={INPUT_STYLING_CLASSNAME}
+        className={clsx(INPUT_STYLING_CLASSNAME)}
         id={name}
         name={name}
         onChange={onChange}

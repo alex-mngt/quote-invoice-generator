@@ -22,13 +22,16 @@ const Home: FC<Props> = (props) => {
     render,
     invoiceNumber,
     invoiceObject,
+    depositString,
     clientName,
+    clientSIREN,
     clientAddress,
     clientZipCodeString,
     clientCity,
     clientCountry,
     clientEmail,
     tasksURLEncoded,
+    invoiceWithDepositString,
     template,
   } = searchParams;
 
@@ -36,8 +39,16 @@ const Home: FC<Props> = (props) => {
     clientZipCodeString !== undefined ? Number(clientZipCodeString) : undefined;
   const isClientZipCodeNumber =
     clientZipCode !== undefined ? !isNaN(clientZipCode) : undefined;
+  const deposit =
+    depositString !== undefined ? Number(depositString) : undefined;
+  const isDepositNumber = deposit !== undefined ? !isNaN(deposit) : undefined;
+  const invoiceWithDeposit =
+    invoiceWithDepositString !== undefined
+      ? invoiceWithDepositString === "true"
+      : undefined;
 
-  const areSearchParamsValid = isClientZipCodeNumber || true;
+  const areSearchParamsValid =
+    (isClientZipCodeNumber && isDepositNumber) || true;
 
   const tasks =
     tasksURLEncoded !== undefined
@@ -52,9 +63,12 @@ const Home: FC<Props> = (props) => {
         clientCountry={clientCountry}
         clientEmail={clientEmail}
         clientName={clientName}
+        clientSIREN={clientSIREN}
         clientZipCode={clientZipCode}
+        deposit={deposit}
         invoiceNumber={invoiceNumber}
         invoiceObject={invoiceObject}
+        invoiceWithDeposit={invoiceWithDeposit}
         render={render === "true"}
         tasks={tasks}
         template={template}
@@ -68,9 +82,12 @@ const Home: FC<Props> = (props) => {
           clientCountry={clientCountry}
           clientEmail={clientEmail}
           clientName={clientName}
+          clientSIREN={clientSIREN}
           clientZipCode={clientZipCode}
+          deposit={deposit}
           invoiceNumber={invoiceNumber}
           invoiceObject={invoiceObject}
+          invoiceWithDeposit={invoiceWithDeposit}
           render={render === "true"}
           tasks={tasks}
           template={template}
@@ -82,9 +99,12 @@ const Home: FC<Props> = (props) => {
           clientCountry={clientCountry}
           clientEmail={clientEmail}
           clientName={clientName}
+          clientSIREN={clientSIREN}
           clientZipCode={clientZipCode}
+          deposit={deposit}
           invoiceNumber={invoiceNumber}
           invoiceObject={invoiceObject}
+          invoiceWithDeposit={invoiceWithDeposit}
           tasks={tasks}
           template={template}
         />

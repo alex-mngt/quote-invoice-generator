@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 
 import { TextInput } from "@/components/Inputs/TextInput";
 
-import { updateTextInputNameSearchParams } from "../_internal/Configurator.utils";
+import { getTextInputNameSearchParamsUpdater } from "../_internal/Configurator.utils";
 
 type Props = {
   clientName: string | undefined;
+  clientSIREN: string | undefined;
   clientAddress: string | undefined;
   clientZipCode: number | undefined;
   clientCity: string | undefined;
@@ -19,34 +20,38 @@ type Props = {
 export const ClientConfigurator: FC<Props> = (props) => {
   const {
     clientName,
+    clientSIREN,
     clientAddress,
     clientZipCode,
     clientCity,
     clientCountry,
     clientEmail,
   } = props;
+
   const router = useRouter();
+
+  const updateTextInputNameSearchParams =
+    getTextInputNameSearchParamsUpdater(router);
 
   return (
     <div className={clsx("w-full", "flex flex-col gap-6")}>
       <p className={clsx("text-xl font-semibold")}>Client</p>
       <div className={clsx("flex flex-col gap-4")}>
+        <TextInput
+          label='Nom'
+          name='clientName'
+          onChange={updateTextInputNameSearchParams}
+          type='text'
+          value={clientName}
+        />
         <div className={clsx("flex gap-4", "w-full")}>
           <TextInput
-            className={clsx("basis-1/2")}
-            label='Nom'
-            name='clientName'
-            onChange={updateTextInputNameSearchParams(router)}
+            className={clsx("basis-full")}
+            label='SIREN'
+            name='clientSIREN'
+            onChange={updateTextInputNameSearchParams}
             type='text'
-            value={clientName}
-          />
-          <TextInput
-            className={clsx("basis-1/2")}
-            label='Email'
-            name='clientEmail'
-            onChange={updateTextInputNameSearchParams(router)}
-            type='text'
-            value={clientEmail}
+            value={clientSIREN}
           />
         </div>
         <div className={clsx("flex gap-4", "w-full")}>
@@ -54,7 +59,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-full")}
             label='Adresse'
             name='clientAddress'
-            onChange={updateTextInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams}
             type='text'
             value={clientAddress}
           />
@@ -64,7 +69,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-2/12")}
             label='Code postal'
             name='clientZipCodeString'
-            onChange={updateTextInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams}
             type='number'
             value={clientZipCode}
           />
@@ -72,7 +77,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-5/12")}
             label='Ville'
             name='clientCity'
-            onChange={updateTextInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams}
             type='text'
             value={clientCity}
           />
@@ -80,11 +85,18 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-5/12")}
             label='Pays'
             name='clientCountry'
-            onChange={updateTextInputNameSearchParams(router)}
+            onChange={updateTextInputNameSearchParams}
             type='text'
             value={clientCountry}
           />
         </div>
+        <TextInput
+          label='Email'
+          name='clientEmail'
+          onChange={updateTextInputNameSearchParams}
+          type='text'
+          value={clientEmail}
+        />
       </div>
     </div>
   );

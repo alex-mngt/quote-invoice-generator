@@ -29,21 +29,24 @@ export const RenderPayment: FC<Props> = (props) => {
             <p>
               <span className={clsx("font-semibold")}>
                 Titulaire du compte :
-              </span>{" "}
+              </span>
+              &nbsp;
               {process.env.NEXT_PUBLIC_COMPANY_ACCOUNT_HOLDER}
             </p>
             <p>
-              <span className={clsx("font-semibold")}>IBAN :</span>{" "}
+              <span className={clsx("font-semibold")}>IBAN :</span>
+              &nbsp;
               {process.env.NEXT_PUBLIC_COMPANY_IBAN}
             </p>
             <p>
-              <span className={clsx("font-semibold")}>BIC :</span>{" "}
+              <span className={clsx("font-semibold")}>BIC :</span>
+              &nbsp;
               {process.env.NEXT_PUBLIC_COMPANY_BIC}
             </p>
           </div>
           <p className={clsx("text-sm text-neutral-600")}>
             {process.env.NEXT_PUBLIC_COMPANY_NAME} vous a envoyé cette facture
-            le{" "}
+            le&nbsp;
             {today.setLocale("fr").toLocaleString({
               day: "numeric",
               month: "long",
