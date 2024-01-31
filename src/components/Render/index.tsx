@@ -1,44 +1,37 @@
-import { FC } from "react";
+"use client";
+
+import { FC, useContext } from "react";
 
 import { clsx } from "clsx";
 import { DateTime } from "luxon";
 
+import { WeAreStudio99 } from "@/components/icons/WeAreStudio99";
+import { GlobalContext } from "@/contexts/GlobalContext";
 import { PDF_MARGINS } from "@/lib/constants";
-import { CommonProps, Task } from "@/lib/types";
+import { CommonProps } from "@/lib/types";
 
-import { getTitle } from "./_internal/Render.utils";
+import { RenderSearchParamsValues } from "./_internal/Render.types";
+import { getContextualValues, getTitle } from "./_internal/Render.utils";
 import { RenderDetails } from "./RenderDetails";
 import { RenderLegal } from "./RenderLegal";
 import { RenderParties } from "./RenderParties";
 import { RenderPayment } from "./RenderPayment";
 import { RenderTasksTable } from "./RenderTasksTable";
-import { WeAreStudio99 } from "../icons/WeAreStudio99";
 
 type Props = {
   render: boolean;
-  template: string | undefined;
-  invoiceNumber: string | undefined;
-  invoiceObject: string | undefined;
-  deposit: number | undefined;
-  clientName: string | undefined;
-  clientSIREN: string | undefined;
-  clientAddress: string | undefined;
-  clientZipCode: number | undefined;
-  clientCity: string | undefined;
-  clientCountry: string | undefined;
-  clientEmail: string | undefined;
-  tasks: Task[] | undefined;
-  invoiceWithDeposit: boolean | undefined;
+  searchParamsValues: RenderSearchParamsValues;
 } & CommonProps;
 
 export const Render: FC<Props> = (props) => {
+  const { className, render, searchParamsValues } = props;
+
+  const globalContext = useContext(GlobalContext);
+
   const {
-    render,
     template,
-    className,
     invoiceNumber,
     invoiceObject,
-    deposit,
     clientName,
     clientSIREN,
     clientAddress,
@@ -46,17 +39,18 @@ export const Render: FC<Props> = (props) => {
     clientCity,
     clientCountry,
     clientEmail,
-    tasks,
+    deposit,
     invoiceWithDeposit,
-  } = props;
+    tasks,
+  } = getContextualValues({
+    render,
+    searchParamsValues,
+    globalContext,
+  });
 
   const today = DateTime.now();
 
-  const ADR = Number(process.env.NEXT_PUBLIC_COMPANY_ADR);
-
-  const isADRNumber = !isNaN(ADR);
-
-  return isADRNumber ? (
+  return (
     <main
       className={clsx(className, !render && `w-[21cm]`, "no-scrollbar")}
       style={{
@@ -86,7 +80,6 @@ export const Render: FC<Props> = (props) => {
         clientZipCode={clientZipCode}
       />
       <RenderTasksTable
-        ADR={ADR}
         className='mb-8'
         deposit={deposit}
         invoiceObject={invoiceObject}
@@ -101,7 +94,5 @@ export const Render: FC<Props> = (props) => {
       />
       <RenderLegal />
     </main>
-  ) : (
-    <p>invalid ADR</p>
   );
 };

@@ -46,7 +46,7 @@ export const TaskLine: FC<Props> = (props) => {
           "text-right text-sm text-neutral-800",
         )}
       >
-        {displayEUR(quantity !== null ? quantity * unitPrice : 0)}
+        {displayEUR(quantity !== undefined ? quantity * unitPrice : 0)}
       </div>
     </>
   );

@@ -6,3 +6,5 @@ export const PDF_MARGINS: PDFMargin = {
   bottom: "2cm",
   left: "2cm",
 };
+
+export const TEMPLATE_VALUES = ["invoice", "quote", "deposit"] as const;

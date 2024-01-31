@@ -1,11 +1,14 @@
 import { Template } from "@/lib/types";
 
-export type HomePageSearchParams = {
-  render?: string;
+export type TaskSearchParamKey =
+  | `task-${number}-name`
+  | `task-${number}-description`
+  | `task-${number}-quantity`;
+
+export type RenderSearchParamsValues = {
   template?: Template;
   invoiceNumber?: string;
   invoiceObject?: string;
-  depositString?: string;
   clientName?: string;
   clientSIREN?: string;
   clientAddress?: string;
@@ -13,6 +16,6 @@ export type HomePageSearchParams = {
   clientCity?: string;
   clientCountry?: string;
   clientEmail?: string;
-  tasksURLEncoded?: string;
+  depositString?: string;
   invoiceWithDepositString?: string;
-};
+} & Record<TaskSearchParamKey, string>;

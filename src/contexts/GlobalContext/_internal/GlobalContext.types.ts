@@ -1,0 +1,30 @@
+import { StateSetter, Task, Template } from "@/lib/types";
+
+export type GlobalContextValue = {
+  template: Template;
+  setTemplate: StateSetter<Template>;
+  invoiceNumber: string;
+  setInvoiceNumber: StateSetter<string>;
+  invoiceObject: string;
+  setInvoiceObject: StateSetter<string>;
+  clientName: string;
+  setClientName: StateSetter<string>;
+  clientSIREN: string;
+  setClientSIREN: StateSetter<string>;
+  clientAddress: string;
+  setClientAddress: StateSetter<string>;
+  clientZipCode: number | undefined;
+  setClientZipCode: StateSetter<number | undefined>;
+  clientCity: string;
+  setClientCity: StateSetter<string>;
+  clientCountry: string;
+  setClientCountry: StateSetter<string>;
+  clientEmail: string;
+  setClientEmail: StateSetter<string>;
+  invoiceWithDeposit: boolean;
+  setInvoiceWithDeposit: StateSetter<boolean>;
+  deposit: number | undefined;
+  setDeposit: StateSetter<number | undefined>;
+  tasks: Task[];
+  setTasks: StateSetter<Task[]>;
+};

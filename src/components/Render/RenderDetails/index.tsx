@@ -3,14 +3,14 @@ import { FC } from "react";
 import clsx from "clsx";
 import { DateTime } from "luxon";
 
-import { CommonProps } from "@/lib/types";
+import { CommonProps, Template } from "@/lib/types";
 
 import { getDetailsNumberName } from "./_internal/RenderDetails.utils";
 
 type Props = {
   invoiceNumber: string | undefined;
   today: DateTime;
-  template: string | undefined;
+  template: Template | undefined;
 } & CommonProps;
 
 export const RenderDetails: FC<Props> = (props) => {
@@ -23,7 +23,9 @@ export const RenderDetails: FC<Props> = (props) => {
           {getDetailsNumberName(template)} :
         </span>
         &nbsp;
-        {invoiceNumber}
+        <span className={clsx("transition-all", !invoiceNumber && "opacity-0")}>
+          {invoiceNumber}
+        </span>
       </p>
       <p>
         <span className={clsx("font-semibold")}>Date d&apos;emmission : </span>

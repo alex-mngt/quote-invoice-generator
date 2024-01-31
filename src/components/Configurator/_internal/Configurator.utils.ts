@@ -2,7 +2,7 @@ import { ChangeEventHandler } from "react";
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-import { Task } from "@/lib/types";
+import { StateSetter, Task } from "@/lib/types";
 
 export const setTasksURLEncodedSearchParam = (url: URL, tasks: Task[]) => {
   url.searchParams.set(
@@ -43,4 +43,42 @@ export const getSwitchInputNameSearchParamsUpdater: (
   url.searchParams.set(e.target.name, `${e.target.checked}`);
 
   router.replace(url.href);
+};
+
+export const updateTextInput = (
+  setter: StateSetter<string> | undefined,
+): ChangeEventHandler<HTMLInputElement> => {
+  return (e) => {
+    if (setter === undefined) {
+      return;
+    }
+
+    setter(e.target.value);
+  };
+};
+
+export const updateNumberInput = (
+  setter: StateSetter<number | undefined> | undefined,
+): ChangeEventHandler<HTMLInputElement> => {
+  return (e) => {
+    if (setter === undefined) {
+      return;
+    }
+
+    const newValue = e.target.valueAsNumber;
+
+    setter(isNaN(newValue) ? undefined : newValue);
+  };
+};
+
+export const updateSwitchInput = (
+  setter: StateSetter<boolean> | undefined,
+): ChangeEventHandler<HTMLInputElement> => {
+  return (e) => {
+    if (setter === undefined) {
+      return;
+    }
+
+    setter(e.target.checked);
+  };
 };

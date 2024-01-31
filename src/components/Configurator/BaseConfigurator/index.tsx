@@ -1,53 +1,34 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { ChangeEventHandler, FC, useContext } from "react";
 
 import { clsx } from "clsx";
-import { useRouter } from "next/navigation";
 
 import { SelectInput } from "@/components/Inputs/SelectInput";
 import { TextInput } from "@/components/Inputs/TextInput";
+import { GlobalContext } from "@/contexts/GlobalContext";
+import { isTemplate } from "@/lib/utils";
 
 import { TEMPLATE_OPTIONS } from "./_internal/BaseConfigurator.constants";
-import { getSelectedTemplateIndex } from "./_internal/BaseConfigurator.utils";
-import { getTextInputNameSearchParamsUpdater } from "../_internal/Configurator.utils";
+import { updateTextInput } from "../_internal/Configurator.utils";
 
-type Props = {
-  invoiceNumber: string | undefined;
-  invoiceObject: string | undefined;
-  template: string | undefined;
-};
+export const BaseConfigurator: FC = () => {
+  const {
+    template,
+    setTemplate,
+    invoiceNumber,
+    setInvoiceNumber,
+    invoiceObject,
+    setInvoiceObject,
+  } = useContext(GlobalContext) ?? {};
 
-export const BaseConfigurator: FC<Props> = (props) => {
-  const { invoiceNumber, invoiceObject, template } = props;
-  const router = useRouter();
-
-  const selectedTemplateIndex = getSelectedTemplateIndex(template);
-
-  const updateTemplateSearchParams = (newSelectedIdx: number) => {
-    if (window === undefined) {
+  const updateTemplate: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    if (setTemplate === undefined || !isTemplate(e.target.value)) {
       return;
     }
 
-    const url = new URL(window.location.href);
-    const searchParams = url.searchParams;
-
-    searchParams.set("template", TEMPLATE_OPTIONS[newSelectedIdx].value);
-
-    router.replace(url.href);
+    setTemplate(e.target.value);
   };
-
-  const updateTextInputNameSearchParams =
-    getTextInputNameSearchParamsUpdater(router);
-
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const searchParams = url.searchParams;
-    searchParams.set("template", TEMPLATE_OPTIONS[selectedTemplateIndex].value);
-
-    router.replace(url.href);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className={clsx("w-full", "flex flex-col gap-6")}>
@@ -58,15 +39,15 @@ export const BaseConfigurator: FC<Props> = (props) => {
             className={clsx("basis-1/2")}
             label='Template'
             name='template'
-            onChange={updateTemplateSearchParams}
+            onChange={updateTemplate}
             options={TEMPLATE_OPTIONS}
-            selectedIndex={selectedTemplateIndex}
+            value={template}
           />
           <TextInput
             className={clsx("basis-1/2")}
             label='Numéro de facture'
             name='invoiceNumber'
-            onChange={updateTextInputNameSearchParams}
+            onChange={updateTextInput(setInvoiceNumber)}
             type='text'
             value={invoiceNumber}
           />
@@ -74,7 +55,7 @@ export const BaseConfigurator: FC<Props> = (props) => {
         <TextInput
           label='Objet'
           name='invoiceObject'
-          onChange={updateTextInputNameSearchParams}
+          onChange={updateTextInput(setInvoiceObject)}
           type='text'
           value={invoiceObject}
         />

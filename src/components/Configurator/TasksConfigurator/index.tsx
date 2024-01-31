@@ -1,93 +1,114 @@
-import { ChangeEventHandler, FC, MouseEventHandler } from "react";
+import { ChangeEventHandler, FC, MouseEventHandler, useContext } from "react";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { clsx } from "clsx";
-import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/Button";
 import { TextAreaInput } from "@/components/Inputs/TextAreaInput";
 import { TextInput } from "@/components/Inputs/TextInput";
-import { Task } from "@/lib/types";
-import { isPropertyOfTask } from "@/lib/utils";
+import { GlobalContext } from "@/contexts/GlobalContext";
+// import { isPropertyOfTask } from "@/lib/utils";
 
-import { setTasksURLEncodedSearchParam } from "../_internal/Configurator.utils";
+export const TasksConfigurator: FC = () => {
+  const { tasks, setTasks } = useContext(GlobalContext) ?? {};
 
-type Props = {
-  tasks: Task[] | undefined;
-};
+  // const updateTaskFromTasksURLEncodedSearchParam: ChangeEventHandler<
+  //   HTMLInputElement | HTMLTextAreaElement
+  // > = (e) => {
+  //   if (tasks === undefined) {
+  //     return;
+  //   }
 
-export const TasksConfigurator: FC<Props> = (props) => {
-  const { tasks } = props;
+  //   const nameMetadata = e.target.name.split("-");
 
-  const router = useRouter();
+  //   if (nameMetadata.length < 2) {
+  //     return;
+  //   }
 
-  const updateTaskFromTasksURLEncodedSearchParam: ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (e) => {
-    if (tasks === undefined) {
-      return;
-    }
+  //   const idx = Number(nameMetadata[0]);
+  //   const property = nameMetadata[1];
 
-    const nameMetadata = e.target.name.split("-");
+  //   if (isNaN(idx) || !isPropertyOfTask(property)) {
+  //     return;
+  //   }
 
-    if (nameMetadata.length < 2) {
-      return;
-    }
+  //   const url = new URL(window.location.href);
 
-    const idx = Number(nameMetadata[0]);
-    const property = nameMetadata[1];
+  //   const newTasks = [...tasks];
 
-    if (isNaN(idx) || !isPropertyOfTask(property)) {
-      return;
-    }
+  //   if (property === "quantity") {
+  //     newTasks[idx][property] =
+  //       e.target.value !== "" ? Number(e.target.value) : null;
+  //   } else {
+  //     newTasks[idx][property] = e.target.value || null;
+  //   }
 
-    const url = new URL(window.location.href);
+  //   setTasksURLEncodedSearchParam(url, newTasks);
 
-    const newTasks = [...tasks];
+  //   router.replace(url.href);
+  // };
 
-    if (property === "quantity") {
-      newTasks[idx][property] =
-        e.target.value !== "" ? Number(e.target.value) : null;
-    } else {
-      newTasks[idx][property] = e.target.value || null;
-    }
-
-    setTasksURLEncodedSearchParam(url, newTasks);
-
-    router.replace(url.href);
-  };
-
-  const removeTaskFromTasksURLEncodedParam: (
+  const getUpdateTaskTextInput = (
     idx: number,
-  ) => MouseEventHandler<HTMLButtonElement> = (idx) => {
-    return () => {
-      if (tasks === undefined) {
+    property: "name" | "description",
+  ): ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> => {
+    return (e) => {
+      if (setTasks === undefined) {
         return;
       }
 
-      const url = new URL(window.location.href);
+      setTasks((tasks) => {
+        const newTasks = [...tasks];
+        newTasks[idx][property] = e.target.value;
 
-      const newTasks = [...tasks];
-      newTasks.splice(idx, 1);
-
-      setTasksURLEncodedSearchParam(url, newTasks);
-
-      router.replace(url.href);
+        return newTasks;
+      });
     };
   };
 
-  const addTaskToTasksURLEncodedSearchParam: MouseEventHandler<
-    HTMLButtonElement
-  > = () => {
-    const url = new URL(window.location.href);
+  const getUpdateTaskQuantity = (
+    idx: number,
+  ): ChangeEventHandler<HTMLInputElement> => {
+    return (e) => {
+      if (setTasks === undefined) {
+        return;
+      }
 
-    const newTask: Task = { name: null, description: null, quantity: null };
-    const newTasks: Task[] =
-      tasks !== undefined ? [...tasks, newTask] : [newTask];
+      setTasks((tasks) => {
+        const newTasks = [...tasks];
 
-    setTasksURLEncodedSearchParam(url, newTasks);
+        const newValue = e.target.valueAsNumber;
 
-    router.replace(url.href);
+        newTasks[idx].quantity = isNaN(newValue) ? undefined : newValue;
+
+        return newTasks;
+      });
+    };
+  };
+
+  const getRemoveTask = (idx: number): MouseEventHandler<HTMLButtonElement> => {
+    return () => {
+      if (setTasks === undefined) {
+        return;
+      }
+
+      setTasks((tasks) => {
+        const newTasks = [...tasks];
+        newTasks.splice(idx, 1);
+
+        return newTasks;
+      });
+    };
+  };
+
+  const addTask: MouseEventHandler<HTMLButtonElement> = () => {
+    if (setTasks === undefined) {
+      return;
+    }
+
+    setTasks((tasks) => {
+      return [...tasks, { name: "", description: "", quantity: undefined }];
+    });
   };
 
   return (
@@ -101,30 +122,30 @@ export const TasksConfigurator: FC<Props> = (props) => {
                 <TextInput
                   className={clsx("basis-2/3")}
                   label='Nom'
-                  name={`${idx}-name`}
-                  onChange={updateTaskFromTasksURLEncodedSearchParam}
+                  name={`task-${idx}-name`}
+                  onChange={getUpdateTaskTextInput(idx, "name")}
                   type='text'
-                  value={task.name === null ? undefined : task.name}
+                  value={task.name}
                 />
                 <TextInput
                   className={clsx("basis-1/3")}
                   label='Jour(s)'
-                  name={`${idx}-quantity`}
-                  onChange={updateTaskFromTasksURLEncodedSearchParam}
+                  name={`task-${idx}-quantity`}
+                  onChange={getUpdateTaskQuantity(idx)}
                   type='number'
-                  value={task.quantity === null ? undefined : task.quantity}
+                  value={task.quantity}
                 />
               </div>
               <TextAreaInput
                 label='Description'
-                name={`${idx}-description`}
-                onChange={updateTaskFromTasksURLEncodedSearchParam}
-                value={task.description === null ? undefined : task.description}
+                name={`task-${idx}-description`}
+                onChange={getUpdateTaskTextInput(idx, "description")}
+                value={task.description}
               />
             </div>
             <Button
               className={clsx("mt-[72px]", "h-[34px]", " text-white")}
-              onClick={removeTaskFromTasksURLEncodedParam(idx)}
+              onClick={getRemoveTask(idx)}
             >
               <TrashIcon className={clsx("h-4 w-4")} />
             </Button>
@@ -138,7 +159,7 @@ export const TasksConfigurator: FC<Props> = (props) => {
               ? "translate-x-0"
               : "-translate-x-4",
           )}
-          onClick={addTaskToTasksURLEncodedSearchParam}
+          onClick={addTask}
           type='button'
         >
           Ajouter une tache
