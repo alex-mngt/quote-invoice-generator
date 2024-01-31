@@ -15,7 +15,7 @@ const Home: FC<Props> = (props) => {
   const { searchParams } = props;
   const { render } = searchParams;
 
-  return render !== "true" ? (
+  return render === "true" ? (
     <Render render={true} searchParamsValues={searchParams} />
   ) : (
     <div className={clsx("h-screen overflow-hidden", "flex")}>
