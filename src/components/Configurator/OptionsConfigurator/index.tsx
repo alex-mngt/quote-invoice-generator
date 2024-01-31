@@ -1,38 +1,27 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
 
 import { SwitchInput } from "@/components/Inputs/SwitchInput";
 import { TextInput } from "@/components/Inputs/TextInput";
+import { GlobalContext } from "@/contexts/GlobalContext";
 
 import {
-  getSwitchInputNameSearchParamsUpdater,
-  getTextInputNameSearchParamsUpdater,
+  updateNumberInput,
+  updateSwitchInput,
 } from "../_internal/Configurator.utils";
 
-type Props = {
-  template: string | undefined;
-  deposit: number | undefined;
-  invoiceWithDeposit: boolean | undefined;
-};
-
-export const OptionsConfigurator: FC<Props> = (props) => {
-  const { template, deposit, invoiceWithDeposit } = props;
-
-  const router = useRouter();
-
-  const updateTextInputNameSearchParams =
-    getTextInputNameSearchParamsUpdater(router);
-  const updateSwitchInputNameSearchParams =
-    getSwitchInputNameSearchParamsUpdater(router);
-
-  console.log(template);
+export const OptionsConfigurator: FC = () => {
+  const {
+    template,
+    invoiceWithDeposit,
+    setInvoiceWithDeposit,
+    deposit,
+    setDeposit,
+  } = useContext(GlobalContext) ?? {};
 
   const showDepositInput =
     template === "deposit" || (template === "invoice" && invoiceWithDeposit);
-
-  console.log(showDepositInput);
 
   return (
     <div className={clsx("w-full", "flex flex-col gap-6")}>
@@ -43,7 +32,7 @@ export const OptionsConfigurator: FC<Props> = (props) => {
             checked={invoiceWithDeposit}
             label='La facture comporte un acompte'
             name='invoiceWithDepositString'
-            onChange={updateSwitchInputNameSearchParams}
+            onChange={updateSwitchInput(setInvoiceWithDeposit)}
           />
         )}
         {showDepositInput && (
@@ -51,7 +40,7 @@ export const OptionsConfigurator: FC<Props> = (props) => {
             className={clsx("w-full")}
             label='Acompte (en €)'
             name='depositString'
-            onChange={updateTextInputNameSearchParams}
+            onChange={updateNumberInput(setDeposit)}
             type='number'
             value={deposit}
           />

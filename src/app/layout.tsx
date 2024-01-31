@@ -3,6 +3,8 @@ import { FC, PropsWithChildren } from "react";
 import { clsx } from "clsx";
 import localFont from "next/font/local";
 
+import { GlobalContextProvider } from "@/contexts/GlobalContext";
+
 import type { Metadata } from "next";
 
 import "./globals.css";
@@ -25,7 +27,7 @@ const RootLayout: FC<PropsWithChildren> = (props) => {
       <body
         className={clsx(neueMontreal.className, "[print-color-adjust:exact]")}
       >
-        {children}
+        <GlobalContextProvider>{children}</GlobalContextProvider>
       </body>
     </html>
   );

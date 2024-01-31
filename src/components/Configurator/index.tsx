@@ -1,14 +1,14 @@
 "use client";
 
-import { FC, useTransition } from "react";
+import { FC, useContext, useTransition } from "react";
 
 import { clsx } from "clsx";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
-import { createPDFBufferJSON } from "@/actions/puppeteer";
 import { Button } from "@/components/Button";
-import { CommonProps, Task } from "@/lib/types";
+import { GlobalContext } from "@/contexts/GlobalContext";
+import { createPDFBufferJSON } from "@/lib/puppeteer/actions";
+import { CommonProps } from "@/lib/types";
 import { downloadFromUrl } from "@/lib/utils";
 
 import { BaseConfigurator } from "./BaseConfigurator";
@@ -16,52 +16,21 @@ import { ClientConfigurator } from "./ClientConfigurator";
 import { OptionsConfigurator } from "./OptionsConfigurator";
 import { TasksConfigurator } from "./TasksConfigurator";
 
-type Props = {
-  template: string | undefined;
-  invoiceNumber: string | undefined;
-  invoiceObject: string | undefined;
-  deposit: number | undefined;
-  clientName: string | undefined;
-  clientSIREN: string | undefined;
-  clientAddress: string | undefined;
-  clientZipCode: number | undefined;
-  clientCity: string | undefined;
-  clientCountry: string | undefined;
-  clientEmail: string | undefined;
-  tasks: Task[] | undefined;
-  invoiceWithDeposit: boolean | undefined;
-} & CommonProps;
+type Props = {} & CommonProps;
 
 export const Configurator: FC<Props> = (props) => {
-  const {
-    template,
-    className,
-    invoiceNumber,
-    invoiceObject,
-    deposit,
-    clientName,
-    clientSIREN,
-    clientAddress,
-    clientZipCode,
-    clientCity,
-    clientCountry,
-    clientEmail,
-    tasks,
-    invoiceWithDeposit,
-  } = props;
+  const { className } = props;
 
+  const { template, invoiceNumber } = useContext(GlobalContext) ?? {};
   const [isPending, startTransition] = useTransition();
-  const searchParams = useSearchParams();
 
-  const triggerPDFGeneration = () => {
-    // TODO : improve the url logic (on tasks) to allow use of formData from native HTML form
+  const triggerPDFGeneration = (formData: FormData) => {
     startTransition(async () => {
-      const pdfBufferJSON = await createPDFBufferJSON(searchParams);
+      const pdfBufferJSON = await createPDFBufferJSON(formData);
 
       // Converting the JSON representation of a Buffer to Buffer with Buffer.from is supported as it's said in NodeJS documentation : https://nodejs.org/api/buffer.html#buftojson
-      // @ts-ignore
+      // @ts-expect-error
       const pdfBuffer = Buffer.from(pdfBufferJSON);
-
       const pdfBlob = new Blob([pdfBuffer], { type: "application/pdf" });
       const pdfBlobUrl = URL.createObjectURL(pdfBlob);
 
@@ -82,28 +51,10 @@ export const Configurator: FC<Props> = (props) => {
         "border-l border-neutral-200 bg-neutral-50",
       )}
     >
-      <BaseConfigurator
-        invoiceNumber={invoiceNumber}
-        invoiceObject={invoiceObject}
-        template={template}
-      />
-      <ClientConfigurator
-        clientAddress={clientAddress}
-        clientCity={clientCity}
-        clientCountry={clientCountry}
-        clientEmail={clientEmail}
-        clientName={clientName}
-        clientSIREN={clientSIREN}
-        clientZipCode={clientZipCode}
-      />
-      {!isQuote && (
-        <OptionsConfigurator
-          deposit={deposit}
-          invoiceWithDeposit={invoiceWithDeposit}
-          template={template}
-        />
-      )}
-      {!isDeposit && <TasksConfigurator tasks={tasks} />}
+      <BaseConfigurator />
+      <ClientConfigurator />
+      {!isQuote && <OptionsConfigurator />}
+      {!isDeposit && <TasksConfigurator />}
       <Button type='submit'>
         {isPending ? "Generating PDF invoice ..." : "Download PDF invoice"}
       </Button>

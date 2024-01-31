@@ -1,37 +1,32 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 
 import { clsx } from "clsx";
-import { useRouter } from "next/navigation";
 
 import { TextInput } from "@/components/Inputs/TextInput";
+import { GlobalContext } from "@/contexts/GlobalContext";
 
-import { getTextInputNameSearchParamsUpdater } from "../_internal/Configurator.utils";
+import {
+  updateNumberInput,
+  updateTextInput,
+} from "../_internal/Configurator.utils";
 
-type Props = {
-  clientName: string | undefined;
-  clientSIREN: string | undefined;
-  clientAddress: string | undefined;
-  clientZipCode: number | undefined;
-  clientCity: string | undefined;
-  clientCountry: string | undefined;
-  clientEmail: string | undefined;
-};
-
-export const ClientConfigurator: FC<Props> = (props) => {
+export const ClientConfigurator: FC = () => {
   const {
     clientName,
+    setClientName,
     clientSIREN,
+    setClientSIREN,
     clientAddress,
+    setClientAddress,
     clientZipCode,
+    setClientZipCode,
     clientCity,
+    setClientCity,
     clientCountry,
+    setClientCountry,
     clientEmail,
-  } = props;
-
-  const router = useRouter();
-
-  const updateTextInputNameSearchParams =
-    getTextInputNameSearchParamsUpdater(router);
+    setClientEmail,
+  } = useContext(GlobalContext) ?? {};
 
   return (
     <div className={clsx("w-full", "flex flex-col gap-6")}>
@@ -40,7 +35,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
         <TextInput
           label='Nom'
           name='clientName'
-          onChange={updateTextInputNameSearchParams}
+          onChange={updateTextInput(setClientName)}
           type='text'
           value={clientName}
         />
@@ -49,7 +44,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-full")}
             label='SIREN'
             name='clientSIREN'
-            onChange={updateTextInputNameSearchParams}
+            onChange={updateTextInput(setClientSIREN)}
             type='text'
             value={clientSIREN}
           />
@@ -59,7 +54,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-full")}
             label='Adresse'
             name='clientAddress'
-            onChange={updateTextInputNameSearchParams}
+            onChange={updateTextInput(setClientAddress)}
             type='text'
             value={clientAddress}
           />
@@ -69,7 +64,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-2/12")}
             label='Code postal'
             name='clientZipCodeString'
-            onChange={updateTextInputNameSearchParams}
+            onChange={updateNumberInput(setClientZipCode)}
             type='number'
             value={clientZipCode}
           />
@@ -77,7 +72,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-5/12")}
             label='Ville'
             name='clientCity'
-            onChange={updateTextInputNameSearchParams}
+            onChange={updateTextInput(setClientCity)}
             type='text'
             value={clientCity}
           />
@@ -85,7 +80,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
             className={clsx("basis-5/12")}
             label='Pays'
             name='clientCountry'
-            onChange={updateTextInputNameSearchParams}
+            onChange={updateTextInput(setClientCountry)}
             type='text'
             value={clientCountry}
           />
@@ -93,7 +88,7 @@ export const ClientConfigurator: FC<Props> = (props) => {
         <TextInput
           label='Email'
           name='clientEmail'
-          onChange={updateTextInputNameSearchParams}
+          onChange={updateTextInput(setClientEmail)}
           type='text'
           value={clientEmail}
         />

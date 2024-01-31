@@ -1,5 +1,5 @@
-export type SelectOption = {
+export type SelectOption<T extends string = string> = {
   display: string;
-  value: string;
+  value: T;
   disabled?: boolean;
 };

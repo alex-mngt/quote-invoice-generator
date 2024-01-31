@@ -6,7 +6,6 @@ import clsx from "clsx";
 import { CommonProps } from "@/lib/types";
 
 import { SelectOption } from "./_internal/SelectInput.types";
-import { getCurrentValue } from "./_internal/SelectInput.utils";
 import { INPUT_STYLING_CLASSNAME } from "../_internal/Inputs.constants";
 
 type Props = {
@@ -14,24 +13,13 @@ type Props = {
   name: string;
   options: SelectOption[];
   placeholder?: string;
-  selectedIndex: number | undefined;
-  onChange: (newSelectedIdx: number) => void;
+  value: string | undefined;
+  onChange: ChangeEventHandler<HTMLSelectElement>;
 } & CommonProps;
 
 export const SelectInput: FC<Props> = (props) => {
-  const {
-    className,
-    label,
-    name,
-    placeholder,
-    onChange,
-    options,
-    selectedIndex,
-  } = props;
-
-  const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    onChange(Number(e.target.value));
-  };
+  const { className, label, name, placeholder, onChange, options, value } =
+    props;
 
   return (
     <div className={clsx(className, "flex flex-col items-start gap-2")}>
@@ -43,16 +31,20 @@ export const SelectInput: FC<Props> = (props) => {
           className={clsx(INPUT_STYLING_CLASSNAME, "pr-7", "appearance-none")}
           id={name}
           name={name}
-          onChange={handleChange}
-          value={getCurrentValue(selectedIndex, placeholder)}
+          onChange={onChange}
+          value={value || ""}
         >
           {placeholder !== undefined ? (
             <option disabled value=''>
               {placeholder}
             </option>
           ) : null}
-          {options.map((option, idx) => (
-            <option disabled={option.disabled} key={option.value} value={idx}>
+          {options.map((option) => (
+            <option
+              disabled={option.disabled}
+              key={option.value}
+              value={option.value}
+            >
               {option.display}
             </option>
           ))}

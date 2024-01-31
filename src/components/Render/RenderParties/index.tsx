@@ -3,7 +3,6 @@ import { FC } from "react";
 import clsx from "clsx";
 
 import { CommonProps } from "@/lib/types";
-import { displayArrayWithCommas } from "@/lib/utils";
 
 type Props = {
   clientName: string | undefined;
@@ -46,16 +45,39 @@ export const RenderParties: FC<Props> = (props) => {
         </a>
       </div>
       <div className='flex flex-1 flex-col gap-1'>
-        <p className={clsx("mb-2", "text-lg font-semibold")}>{clientName}</p>
-        <p>
+        <p
+          className={clsx(
+            "mb-2",
+            "transition-all",
+            !clientName && "opacity-0",
+            "text-lg font-semibold",
+          )}
+        >
+          {clientName}
+        </p>
+        <p className={clsx("transition-all", !clientSIREN && "opacity-0")}>
           <span className={clsx("font-medium")}>SIREN : </span>
           {clientSIREN}
         </p>
-        <p>{clientAddress}</p>
-        <p>
-          {displayArrayWithCommas([clientZipCode, clientCity, clientCountry])}
+        <p className={clsx("transition-all", !clientAddress && "opacity-0")}>
+          {clientAddress}
         </p>
-        <a href={`mailto:${clientEmail}`}>{clientEmail}</a>
+        <p
+          className={clsx(
+            "transition-all",
+            !clientZipCode && !clientCity && !clientCountry && "opacity-0",
+          )}
+        >
+          {[clientZipCode, clientCity, clientCountry]
+            .filter((value) => value)
+            .join(", ")}
+        </p>
+        <a
+          className={clsx("transition-all", !clientEmail && "opacity-0")}
+          href={`mailto:${clientEmail}`}
+        >
+          {clientEmail}
+        </a>
       </div>
     </div>
   );

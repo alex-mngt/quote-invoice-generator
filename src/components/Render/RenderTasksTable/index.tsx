@@ -13,14 +13,13 @@ type Props = {
   deposit: number | undefined;
   invoiceWithDeposit: boolean | undefined;
   tasks: Task[] | undefined;
-  ADR: number;
 } & CommonProps;
 
 export const RenderTasksTable: FC<Props> = (props) => {
   const {
     invoiceObject,
     tasks,
-    ADR,
+
     className,
     template,
     deposit,
@@ -30,11 +29,19 @@ export const RenderTasksTable: FC<Props> = (props) => {
   const isDeposit = template === "deposit";
   const isInvoice = template === "invoice";
 
-  return (
+  const ADR = Number(process.env.NEXT_PUBLIC_COMPANY_ADR);
+
+  return !isNaN(ADR) ? (
     <div className={clsx(className, "flex flex-col gap-6")}>
       <div className={clsx("flex justify-between gap-4")}>
         <p>
-          <span className={clsx("font-semibold")}>Objet :</span> {invoiceObject}
+          <span className={clsx("font-semibold")}>Objet :</span>
+          &nbsp;
+          <span
+            className={clsx("transition-all", !invoiceObject && "opacity-0")}
+          >
+            {invoiceObject}
+          </span>
         </p>
         {!isDeposit && (
           <p>
@@ -80,7 +87,7 @@ export const RenderTasksTable: FC<Props> = (props) => {
         {isDeposit && deposit !== undefined ? (
           <TaskLine
             hideQuantity
-            task={{ name: "Acompte", description: null, quantity: 1 }}
+            task={{ name: "Acompte", description: "", quantity: 1 }}
             unitPrice={deposit}
           />
         ) : (
@@ -91,7 +98,7 @@ export const RenderTasksTable: FC<Props> = (props) => {
             {isInvoice && invoiceWithDeposit && deposit !== undefined && (
               <TaskLine
                 hideQuantity
-                task={{ name: "Acompte", description: null, quantity: 1 }}
+                task={{ name: "Acompte", description: "", quantity: 1 }}
                 unitPrice={-deposit}
               />
             )}
@@ -123,5 +130,7 @@ export const RenderTasksTable: FC<Props> = (props) => {
         * TVA non applicable - article 293 B du CGI
       </p>
     </div>
+  ) : (
+    <p>invalid ADR</p>
   );
 };
