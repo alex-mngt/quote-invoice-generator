@@ -11,31 +11,32 @@
   },
   "dependencies": {
     "@heroicons/react": "2.1.1",
+    "@sparticuz/chromium": "121",
     "clsx": "2.1.0",
     "luxon": "3.4.4",
     "next": "14.1.0",
-    "puppeteer": "21.10.0",
+    "puppeteer": "21.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@types/luxon": "3.4.2",
-    "@types/node": "20.11.13",
-    "@types/react": "18.2.48",
-    "@types/react-dom": "18.2.18",
-    "@typescript-eslint/eslint-plugin": "6.20.0",
-    "@typescript-eslint/parser": "6.20.0",
+    "@types/node": "20.11.19",
+    "@types/react": "18.2.57",
+    "@types/react-dom": "18.2.19",
+    "@typescript-eslint/eslint-plugin": "7.0.2",
+    "@typescript-eslint/parser": "7.0.2",
     "autoprefixer": "10.4.17",
     "eslint": "8.56.0",
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-plugin-import": "2.29.1",
-    "postcss": "8.4.33",
-    "prettier": "3.2.4",
+    "postcss": "8.4.35",
+    "prettier": "3.2.5",
     "prettier-plugin-tailwindcss": "0.5.11",
     "tailwindcss": "3.4.1",
     "typescript": "5.3.3",
-    "typescript-plugin-css-modules": "5.0.2"
+    "typescript-plugin-css-modules": "5.1.0"
   }
 }

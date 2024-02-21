@@ -4,6 +4,7 @@ import { PuppeteerNode } from "puppeteer";
 
 import { PDF_MARGINS } from "@/lib/constants";
 
+const chromium = require("@sparticuz/chromium");
 const puppeteer: PuppeteerNode = require("puppeteer");
 
 export const createPDFBufferJSON = async (
@@ -12,8 +13,11 @@ export const createPDFBufferJSON = async (
   const debug = process.env.PUPPETEER_DEBUG === "true";
 
   const browser = await puppeteer.launch({
-    headless: debug ? false : "new",
     devtools: debug ? true : false,
+    headless: debug ? false : chromium.headless,
+    args: debug ? undefined : chromium.args,
+    defaultViewport: debug ? undefined : chromium.defaultViewport,
+    executablePath: debug ? undefined : await chromium.executablePath(),
   });
 
   const page = await browser.newPage();
