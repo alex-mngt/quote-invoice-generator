@@ -19,7 +19,6 @@ export const RenderTasksTable: FC<Props> = (props) => {
   const {
     invoiceObject,
     tasks,
-
     className,
     template,
     deposit,

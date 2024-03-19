@@ -42,9 +42,9 @@ const parseTasksFromSearchParams = (
         }
       } else {
         tasks.push({
-          name: "",
-          description: "",
-          quantity: undefined,
+          name: property === "name" ? value : "",
+          description: property === "description" ? value : "",
+          quantity: property === "quantity" ? Number(value) : undefined,
         });
       }
 
@@ -81,60 +81,77 @@ export const getContextualValues = (
 ): ContextualValues => {
   const { render, searchParamsValues, globalContext } = params;
 
-  const {
-    template: contextTemplate,
-    invoiceNumber: contextInvoiceNumber,
-    invoiceObject: contextInvoiceObject,
-    clientName: contextClientName,
-    clientSIREN: contextClientSIREN,
-    clientAddress: contextClientAddress,
-    clientZipCode: contextClientZipCode,
-    clientCity: contextClientCity,
-    clientCountry: contextClientCountry,
-    clientEmail: contextClientEmail,
-    deposit: contextDeposit,
-    invoiceWithDeposit: contextInvoiceWithDeposit,
-    tasks: contextTasks,
-  } = globalContext ?? {};
+  if (render) {
+    const {
+      template: searchParamsTemplate,
+      invoiceNumber: searchParamsInvoiceNumber,
+      invoiceObject: searchParamsInvoiceObject,
+      clientName: searchParamsClientName,
+      clientSIREN: searchParamsClientSIREN,
+      clientAddress: searchParamsClientAddress,
+      clientZipCodeString: searchParamsClientZipCodeString,
+      clientCity: searchParamsClientCity,
+      clientCountry: searchParamsClientCountry,
+      clientEmail: searchParamsClientEmail,
+      depositString: searchParamsDepositString,
+      invoiceWithDepositString: searchParamsInvoiceWithDepositString,
+      ...searchParamsTasksObject
+    } = searchParamsValues;
 
-  const {
-    template: searchParamsTemplate,
-    invoiceNumber: searchParamsInvoiceNumber,
-    invoiceObject: searchParamsInvoiceObject,
-    clientName: searchParamsClientName,
-    clientSIREN: searchParamsClientSIREN,
-    clientAddress: searchParamsClientAddress,
-    clientZipCodeString: searchParamsClientZipCodeString,
-    clientCity: searchParamsClientCity,
-    clientCountry: searchParamsClientCountry,
-    clientEmail: searchParamsClientEmail,
-    depositString: searchParamsDepositString,
-    invoiceWithDepositString: searchParamsInvoiceWithDepositString,
-    ...searchParamsTasksObject
-  } = searchParamsValues;
+    const searchParamsTasks = parseTasksFromSearchParams(
+      searchParamsTasksObject,
+    );
+    const searchParamsClientZipCode = Number(searchParamsClientZipCodeString);
+    const searchParamsDeposit = Number(searchParamsDepositString);
+    const searchParamsInvoiceWithDeposit =
+      searchParamsInvoiceWithDepositString === "on";
 
-  const searchParamsTasks = parseTasksFromSearchParams(searchParamsTasksObject);
+    return {
+      template: searchParamsTemplate,
+      invoiceNumber: searchParamsInvoiceNumber,
+      invoiceObject: searchParamsInvoiceObject,
+      clientName: searchParamsClientName,
+      clientSIREN: searchParamsClientSIREN,
+      clientAddress: searchParamsClientAddress,
+      clientZipCode: searchParamsClientZipCode,
+      clientCity: searchParamsClientCity,
+      clientCountry: searchParamsClientCountry,
+      clientEmail: searchParamsClientEmail,
+      deposit: searchParamsDeposit,
+      invoiceWithDeposit: searchParamsInvoiceWithDeposit,
+      tasks: searchParamsTasks,
+    };
+  } else {
+    const {
+      template: contextTemplate,
+      invoiceNumber: contextInvoiceNumber,
+      invoiceObject: contextInvoiceObject,
+      clientName: contextClientName,
+      clientSIREN: contextClientSIREN,
+      clientAddress: contextClientAddress,
+      clientZipCode: contextClientZipCode,
+      clientCity: contextClientCity,
+      clientCountry: contextClientCountry,
+      clientEmail: contextClientEmail,
+      deposit: contextDeposit,
+      invoiceWithDeposit: contextInvoiceWithDeposit,
+      tasks: contextTasks,
+    } = globalContext ?? {};
 
-  const searchParamsClientZipCode = Number(searchParamsClientZipCodeString);
-  const searchParamsDeposit = Number(searchParamsDepositString);
-  const searchParamsInvoiceWithDeposit =
-    searchParamsInvoiceWithDepositString === "on";
-
-  return {
-    template: render ? searchParamsTemplate : contextTemplate,
-    invoiceNumber: render ? searchParamsInvoiceNumber : contextInvoiceNumber,
-    invoiceObject: render ? searchParamsInvoiceObject : contextInvoiceObject,
-    clientName: render ? searchParamsClientName : contextClientName,
-    clientSIREN: render ? searchParamsClientSIREN : contextClientSIREN,
-    clientAddress: render ? searchParamsClientAddress : contextClientAddress,
-    clientZipCode: render ? searchParamsClientZipCode : contextClientZipCode,
-    clientCity: render ? searchParamsClientCity : contextClientCity,
-    clientCountry: render ? searchParamsClientCountry : contextClientCountry,
-    clientEmail: render ? searchParamsClientEmail : contextClientEmail,
-    deposit: render ? searchParamsDeposit : contextDeposit,
-    invoiceWithDeposit: render
-      ? searchParamsInvoiceWithDeposit
-      : contextInvoiceWithDeposit,
-    tasks: render ? searchParamsTasks : contextTasks,
-  };
+    return {
+      template: contextTemplate,
+      invoiceNumber: contextInvoiceNumber,
+      invoiceObject: contextInvoiceObject,
+      clientName: contextClientName,
+      clientSIREN: contextClientSIREN,
+      clientAddress: contextClientAddress,
+      clientZipCode: contextClientZipCode,
+      clientCity: contextClientCity,
+      clientCountry: contextClientCountry,
+      clientEmail: contextClientEmail,
+      deposit: contextDeposit,
+      invoiceWithDeposit: contextInvoiceWithDeposit,
+      tasks: contextTasks,
+    };
+  }
 };
